@@ -1,0 +1,5 @@
+spring:
+  application:
+    name: moai-18901-saldo-devedor
+  profiles:
+    default: local
