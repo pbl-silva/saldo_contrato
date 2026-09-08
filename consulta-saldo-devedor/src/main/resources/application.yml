@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: consulta-saldo-devedor
+  config:
+    import: classpath:persistence/${imob.persistence:h2}.yml
+
+# Seleção explícita, independente do perfil Spring.
+# DB2 exige seu próprio adapter e arquivo de configuração; não há fallback para H2.
+imob:
+  persistence: h2
