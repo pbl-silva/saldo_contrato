@@ -2,7 +2,7 @@ package br.com.bradesco.imob.consultasaldodevedor.application.usecase.contract;
 
 import br.com.bradesco.imob.consultasaldodevedor.application.exception.InvalidContractNumberException;
 import br.com.bradesco.imob.consultasaldodevedor.application.model.contract.ContractDebtBalance;
-import br.com.bradesco.imob.consultasaldodevedor.application.port.out.contract.ContractDebtBalanceRepository;
+import br.com.bradesco.imob.consultasaldodevedor.application.service.contract.ContractDebtBalanceService;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
@@ -17,17 +17,17 @@ import static org.mockito.Mockito.when;
 
 class GetContractDebtBalanceUseCaseImplTest {
 
-    private final ContractDebtBalanceRepository finder =
-            mock(ContractDebtBalanceRepository.class);
+    private final ContractDebtBalanceService service =
+            mock(ContractDebtBalanceService.class);
 
     private final GetContractDebtBalanceUseCaseImpl useCase =
-            new GetContractDebtBalanceUseCaseImpl(finder);
+            new GetContractDebtBalanceUseCaseImpl(service);
 
     @Test
     void shouldReturnContractWhenFound() {
         var contract = contractDebtBalance();
 
-        when(finder.findByContractNumber(1001L))
+        when(service.findByContractNumber(1001L))
                 .thenReturn(Optional.of(contract));
 
         var result = useCase.execute(1001L);
@@ -37,7 +37,7 @@ class GetContractDebtBalanceUseCaseImplTest {
 
     @Test
     void shouldReturnEmptyWhenContractDoesNotExist() {
-        when(finder.findByContractNumber(9999L))
+        when(service.findByContractNumber(9999L))
                 .thenReturn(Optional.empty());
 
         assertThat(useCase.execute(9999L)).isEmpty();
@@ -48,7 +48,8 @@ class GetContractDebtBalanceUseCaseImplTest {
         assertThatThrownBy(() -> useCase.execute(0L))
                 .isInstanceOf(InvalidContractNumberException.class)
                 .hasMessage("Número do contrato inválido.");
-        verifyNoInteractions(finder);
+
+        verifyNoInteractions(service);
     }
 
     @Test
@@ -57,7 +58,7 @@ class GetContractDebtBalanceUseCaseImplTest {
                 .isInstanceOf(InvalidContractNumberException.class)
                 .hasMessage("Número do contrato inválido.");
 
-        verifyNoInteractions(finder);
+        verifyNoInteractions(service);
     }
 
     @Test
@@ -66,7 +67,7 @@ class GetContractDebtBalanceUseCaseImplTest {
                 .isInstanceOf(InvalidContractNumberException.class)
                 .hasMessage("Número do contrato inválido.");
 
-        verifyNoInteractions(finder);
+        verifyNoInteractions(service);
     }
 
     private ContractDebtBalance contractDebtBalance() {

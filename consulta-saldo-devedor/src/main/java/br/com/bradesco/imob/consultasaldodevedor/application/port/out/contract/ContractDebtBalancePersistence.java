@@ -4,7 +4,7 @@ import br.com.bradesco.imob.consultasaldodevedor.application.model.contract.Cont
 
 import java.util.Optional;
 
-public interface ContractDebtBalanceRepository {
+public interface ContractDebtBalancePersistence {
 
     Optional<ContractDebtBalance> findByContractNumber(Long contractNumber);
 }
